@@ -55,13 +55,26 @@ codon={'TTT':'F','TTC':'F',
 	'ACN':'T',
 	'TAY':'Y',
 	'GTN':'V',
-	'TAR':'X','TRA':'X'}
+	'TAR':'X','TRA':'X',
+	'YTA':'L',
+	'GCW':'A',
+	'CGM':'R',
+	'CCM':'P',
+	'TTR':'L',
+	'KCA':'-',
+	'ARG':'-',
+	'WTA':'-',
+	'YAT':'-'}
+
 
 aas=[]
 for i,pro in enumerate(protease):
 	aas.append('')
 	for j in range(len(pro)/3):
-		aas[i]+=codon[pro[3*j:3*(j+1)]]
+		if pro[3*j:3*(j+1)] in codon:
+			aas[i]+=codon[pro[3*j:3*(j+1)]]
+		else:
+			aas[i]+='-'
 
 for aasi in aas:
 	print aasi
