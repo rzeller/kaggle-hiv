@@ -118,4 +118,4 @@ def PSSM(protein, database = "uniprot_sprot.fasta", directory = "databases/", nu
     PSSMvalues = np.array(PSSMvalues)
 
 
-    return {"Labeled PSSM": labeledPSSM, "PSSM Values": PSSMvalues}
+    return {"Column labels": np.array(labels), "PSSM Values": PSSMvalues}
