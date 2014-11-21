@@ -131,4 +131,4 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
 
 
 
-PSSM("ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF", database = "/Users/Ryan/PythonProjects/Databases/uniprot_sprot.fasta", numIter=3)
+#PSSM("ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF", database = "/Users/Ryan/PythonProjects/Databases/uniprot_sprot.fasta", numIter=3)
