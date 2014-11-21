@@ -3,7 +3,7 @@ kaggle-hiv
 MakeRep:
 Comtains two functions SMR and PSSM 
 
---------------------------------------------------------------SMR---------------------------------------------------------------SMR will make a matrix representation of a protein based on a given substitution matrix (i.e. blosum or pam)
+--------------------------------------------------------------SMR------------------------------------------------------------- SMR will make a matrix representation of a protein based on a given substitution matrix (i.e. blosum or pam)
 common substituion matrices can be found in the biopython package (Bio.SubsMat.MatrixInfo)
 --------------------------------------------------------------------------------------------------------------------------------
 
