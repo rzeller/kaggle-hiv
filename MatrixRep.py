@@ -54,6 +54,11 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
     #MakeDB.py will create a Blast database of the same name in the same folder (ignore the .phr and .psq extensions)
     #The resulting Blast database can then be used for creating PSSM
 
+    #COMMON ERROR: if blast runs, but outfile is not found, it may be that there were no hits in the database
+    #often because query sequence is too short
+    #this query sequence has worked in the past and can work for testing/debugging code: 
+    #    "ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF"
+
 
     ###Inputs###
     #protein: AA sequence as string, list, or file
@@ -85,7 +90,7 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
     else:
         query = protein
 
-    print "running"
+
 
 
     #Constructing strings to run on command line
@@ -93,7 +98,7 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
                  + " -out_ascii_pssm " + outfile + " -num_iterations " + str(numIter)
 
     os.system(BlastString)
-    print BlastString
+
 
     #Parsing file output from blast+ to create working PSSM matrix
     with open(outfile, 'r') as PSSMtxt:
@@ -117,8 +122,7 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
 
 
     #PSSM values is just a nx20 matrix containing the values of the PSSM
-    PSSMvalues = [x[2:22] for x in labeledPSSM[1:]]
-    PSSMvalues = np.array(PSSMvalues)
+    PSSMvalues = np.array([x[2:22] for x in labeledPSSM[1:]])
     print PSSMvalues
 
 
@@ -127,4 +131,4 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
 
 
 
-PSSM("ACGTGDF", database = "/Users/Ryan/PythonProjects/Databases/uniprot_sprot.fasta")
+PSSM("ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF", database = "/Users/Ryan/PythonProjects/Databases/uniprot_sprot.fasta", numIter=3)
