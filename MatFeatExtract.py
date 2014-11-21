@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def PseudoPSSM(M):
 	#Pseudo-PSSM code as described in Nanni, Lumini, and Brahnam (2014)
@@ -34,15 +35,45 @@ def AverageBlocks(M):
 
 # def SVD(M):
 
-# def DCT(M):
+def DiscreteCosineTransform(M):
+	#Discrete Cosine Transform retaining first 20 coefficients for each amino acid
+	###Inputs###
+    # M: Nx20 array (matrix) to extract features from
+    ###Outputs###
+    # DCT: 1-D feature array with 400 values
+    from scipy.fftpack import dct
+    DCT=dct(M)[:20,:].reshape(400,1)
+    return DCT
 
-# def AutoCovar(M):
+
+def AutoCovariance(M):
+	#One-sided autocovariance with lags 1 through 15 
+	###Inputs###
+    # M: Nx20 array (matrix) to extract features from
+    ###Outputs###
+    # AC: 1-D feature array with 300 values
+    Mp=M-np.mean(M,0).reshape(1,20)
+    AC=np.zeros((15,20))
+    for lag in range(1,16):
+    	AC[lag-1,:]=np.mean(Mp[:-lag,:]*Mp[lag:,:],0)
+    return AC.reshape(300,1)
+
+def SingularValueDecomposition(M):
+	#Singular values based on singular value decomposition
+	###Inputs###
+    # M: Nx20 array (matrix) to extract features from
+    ###Outputs###
+    # SVD: 1-D feature array with min(N,20) values
+    SVD=np.linalg.svd(M,compute_uv=0)
+    return SVD.reshape(len(SVD),1)
 
 
 
-
-
-M=np.random.randn(100,20)
+M=np.cumsum(np.random.randn(100,20),0)
 # featvec=PseudoPSSM(M)
-featvec=AverageBlocks(M)
+featvec=SingularValueDecomposition(M)
 print featvec
+
+
+# plt.plot(featvec.reshape(15,20))
+# plt.show()
