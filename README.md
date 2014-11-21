@@ -20,8 +20,8 @@ The compressed SwissProt protein sequence file is in the github repo: rbloom5/Se
 The best method is probably to pull zipped file and then unzip locally into a different directory outside the github repo
 
 
-To make a Blast database from an (unzipped) sequence file run MakeDB.py on the file
-MakeDB.py will create a Blast database of the same name in the same folder (ignore the .phr and .psq extensions)
+To make a Blast database from an (unzipped) sequence file run MakeDB.py on the file.  
+This will create a Blast database of the same name in the same folder (ignore the .phr and .psq extensions)
 The resulting Blast database can then be used for creating PSSM
 
 
