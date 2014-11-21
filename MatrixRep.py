@@ -41,22 +41,25 @@ def SMR(protein, subMat = None):
 
 
 
-def PSSM(protein, database = "uniprot_sprot.fasta", directory = "databases/", numIter = 3, outfile = "PSSMout.txt"):
+def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSMout.txt"):
     #Requires (unzipped) database of protein sequences, swissprot is default
     #Requires that blast+ command line tools are installed (no internet based interface with python is supported by BLAST at this time)
     #download blast+ here: http://www.ncbi.nlm.nih.gov/books/NBK1763/ and install in usr/bin/applications
-    #I put the zipped database in the github - unzipped files and databases are too large to sync
-    #To actually use the database, unzip the file locally, then navigate to that directory in the terminal
-    # and type makeblastdb -in 'filename' -out 'out-filename' -dbtype prot 
-    #could add this functionality to the script eventually
+    
+    #The compressed SwissProt protein sequence file is in the github repo- unzipped files and databases are too large to sync
+    #can pull and unzip locally
+    
+
+    #To make a Blast database from an (unzipped) sequence file run MakeDB.py on the file
+    #MakeDB.py will create a Blast database of the same name in the same folder (ignore the .phr and .psq extensions)
+    #The resulting Blast database can then be used for creating PSSM
+
 
     ###Inputs###
     #protein: AA sequence as string, list, or file
 
-    #databse: database of protein sequences to compare against
+    #database: the path of the database of protein sequences to compare against
     #'uniprot_sprot.fasta' is default
-
-    #directory: directory of database, ~databases/ is default
 
     #numIter: number of iterations when comparing to database
     # 3 is default (min for PSSM matrix)
@@ -82,15 +85,15 @@ def PSSM(protein, database = "uniprot_sprot.fasta", directory = "databases/", nu
     else:
         query = protein
 
+    print "running"
 
 
     #Constructing strings to run on command line
-    DatabaseString = directory + database
-    BlastString = "psiblast -db " + DatabaseString + " -query " + query \
+    BlastString = "psiblast -db " + database + " -query " + query \
                  + " -out_ascii_pssm " + outfile + " -num_iterations " + str(numIter)
 
     os.system(BlastString)
-
+    print BlastString
 
     #Parsing file output from blast+ to create working PSSM matrix
     with open(outfile, 'r') as PSSMtxt:
@@ -116,6 +119,12 @@ def PSSM(protein, database = "uniprot_sprot.fasta", directory = "databases/", nu
     #PSSM values is just a nx20 matrix containing the values of the PSSM
     PSSMvalues = [x[2:22] for x in labeledPSSM[1:]]
     PSSMvalues = np.array(PSSMvalues)
+    print PSSMvalues
 
 
     return {"Column labels": np.array(labels), "PSSM Values": PSSMvalues}
+
+
+
+
+PSSM("ACGTGDF", database = "/Users/Ryan/PythonProjects/Databases/uniprot_sprot.fasta")
