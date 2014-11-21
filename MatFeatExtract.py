@@ -69,10 +69,9 @@ def SingularValueDecomposition(M):
 
 
 
-M=np.cumsum(np.random.randn(100,20),0)
-# featvec=PseudoPSSM(M)
-featvec=SingularValueDecomposition(M)
-print featvec
+# M=np.cumsum(np.random.randn(100,20),0)
+# featvec=SingularValueDecomposition(M)
+# print featvec
 
 
 # plt.plot(featvec.reshape(15,20))
