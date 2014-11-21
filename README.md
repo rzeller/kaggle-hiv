@@ -1,7 +1,7 @@
 kaggle-hiv
 ==========
-—————————MakeRep——————————————
-Comtains two functions SMR and PSSM 
+—————————MakeRep—————————————— 
+Contains two functions SMR and PSSM 
 
 SMR:
 SMR will make a matrix representation of a protein based on a given substitution matrix (i.e. blosum or pam)
