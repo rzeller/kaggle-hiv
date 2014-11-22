@@ -1,0 +1,7 @@
+#ignore python binary files
+*.pyc
+
+#ignore other files that are generated when running MatrixRep.py 
+*.fasta
+databases/
+PSSMout.txt
