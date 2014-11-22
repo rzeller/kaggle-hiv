@@ -99,6 +99,10 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
 
     os.system(BlastString)
 
+    #remove file we created for protein sequence
+    if type(protein) is not "file":
+        os.remove("ProteinQuery.fasta")
+
 
     #Parsing file output from blast+ to create working PSSM matrix
     with open(outfile, 'r') as PSSMtxt:
@@ -131,4 +135,4 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
 
 
 
-#PSSM("ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF", database = "/Users/Ryan/PythonProjects/Databases/uniprot_sprot.fasta", numIter=3)
+print(PSSM("ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF", database = "databases/uniprot_sprot.fasta"))
