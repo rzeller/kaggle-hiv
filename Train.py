@@ -14,6 +14,8 @@ import sys
 sys.path.append('MLtools/')
 import cv_averages
 
+
+
 def FeatureExtract(data, database):
 	#Run through data, create representations, extract features, and aggregate
 	for d in data:
@@ -62,7 +64,7 @@ def FeatureExtract(data, database):
 
 def select_shuffle(MLdata, firstIndex=0, lastIndex=None):
 	#Allows you to reduce the training data and slice it into number of 0's and 1's
-	#the final 206 entries in data will all be 1's, so if the firstIndex is 600 and lastIndex is\
+	#the final 206 entries in data (once sorted in main) will all be 1's, so if the firstIndex is 600 and lastIndex is
 	#1000 (or unspecified) then you will have about half pos, half neg for the training set
 	#default is just to take all the data though 
 
@@ -84,7 +86,7 @@ def select_shuffle(MLdata, firstIndex=0, lastIndex=None):
 
 
 
-
+#######  MAIN   ###########
 
 database='databases/uniprot_sprot.fasta'
 
@@ -103,7 +105,7 @@ data.sort(key=lambda x: x[1])
 MLdata = FeatureExtract(data, database)
 
 #Create X and y vectors for machine learning (and shuffle so cv's work better)
-XandY = select_shuffle(MLdata,firstIndex = 400)
+XandY = select_shuffle(MLdata,firstIndex = 0)
 X = XandY['X']
 y = XandY['y']
 
@@ -111,7 +113,7 @@ y = XandY['y']
 
 #Do Machine Learning 
 RF = RandomForestClassifier(n_estimators=200)
-Svec = SVC(probability=True)
+Svec = SVC(probability=True, class_weight = 'auto')
 cv = cross_validation.KFold(len(X), 5, indices=False)
 
 Xreduce = SelectKBest(f_classif, 100).fit_transform(X,y) #reduces the data for the SVM classifier
@@ -122,7 +124,11 @@ print cv_averages.cv_metrics(RF, cv, X, y, precision_recall = True, auc = True, 
 
 
 
-
-
-
+#Do SVM again but this time don't use all data
+XandY = select_shuffle(MLdata,firstIndex = 450)
+X = XandY['X']
+y = XandY['y']
+cv = cross_validation.KFold(len(X), 5, indices=False)
+Xreduce = SelectKBest(f_classif, 100).fit_transform(X,y) #reduces the data for the SVM classifier
+print cv_averages.cv_metrics(Svec, cv, Xreduce, y, precision_recall = True, auc = True)
 

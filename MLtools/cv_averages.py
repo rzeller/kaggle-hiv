@@ -13,6 +13,7 @@ def cv_metrics(evaluator, cv, X, y, precision_recall = False, auc = False, log_l
 	results = []
 	precision = []
 	recall = []
+	F1 = []
 	truepos = []
 	falsepos = []
 	auc = []
@@ -37,7 +38,7 @@ def cv_metrics(evaluator, cv, X, y, precision_recall = False, auc = False, log_l
 		if precision_recall is not False:
 			precision.append(precision_score(y[testcv], FoldPredicts))
 			recall.append(recall_score(y[testcv], FoldPredicts)) 
-
+			F1.append(f1_score(y[testcv], FoldPredicts)) 
 			# conf_mat = confusion_matrix(y[testcv],FoldPredicts)
 			# truepos.append(conf_mat[1][1]/(conf_mat[1][1]+conf_mat[1][0]))
 			# falsepos.append(conf_mat[0][1]/(conf_mat[0][1]+conf_mat[1][1]))
@@ -53,54 +54,11 @@ def cv_metrics(evaluator, cv, X, y, precision_recall = False, auc = False, log_l
 	return {"score": np.array(results).mean(), \
 			"precision": np.array(precision).mean(), \
 			"recall": np.array(recall).mean(), \
+			"F1": np.array(F1).mean(),\
 			# "truepos": np.array(truepos).mean(), \
 			# "falsepos": np.array(falsepos).mean(), \
 			"auc": np.array(auc).mean() }
 
 
 
-	        #fpr, tpr, thresh = roc_curve(y[testcv],Oneprobas, pos_label=1)
-	        #plt.figure()
-	        #plt.plot(fpr, tpr)
-	        #thresh_scores, preci, recall = diff_thresholds.thresh_score_prec_recall(y[testcv],Oneprobas,thresholds)
-	        #prec, rec, thresh = precision_recall_curve(y[testcv],Oneprobas, pos_label=1)
-	#             plt.figure()
-	#             plt.plot(thresh, prec[:len(prec)-1], 'r', thresh, rec[:len(rec)-1], 'b')
 	        
-
-	        # if sample_thresh == []:
-	        #     sample_thresh = np.array(thresh_scores)
-	        #     sample_prec = np.array(preci)
-	        #     sample_rec = np.array(recall)
-	        # else:
-            #     sample_thresh = np.vstack((sample_thresh,np.array(thresh_scores)))
-            #     sample_prec = np.vstack((sample_prec,np.array(preci)))
-            #     sample_rec = np.vstack((sample_rec,np.array(recall)))
-
-            
-            
-            
-            
-        #     #RFpr = precision_recall_fscore_support(y[testcv],RFpredicts)
-        #     SVMpr = precision_recall_fscore_support(y[testcv],SVMpredicts)
-        #     #RFp.append(RFpr[0][1])
-        #     #RFr.append(RFpr[1][1])
-        #     SVMp.append(SVMpr[0][1])
-        #     SVMr.append(SVMpr[1][1])
-
-
-        # #FinalRF.append(np.array(RFresults).mean())
-        # FinalSVM.append(np.array(SVMresults).mean())
-        # #FinalRFp.append(np.array(RFp).mean())
-        # #FinalRFr.append(np.array(RFr).mean())
-        # FinalSVMp.append(np.array(SVMp).mean())
-        # FinalSVMr.append(np.array(SVMr).mean())
-        # aucF.append(np.array(auc).mean())
-        # plt.figure()
-        # plt.plot(thresholds,np.average(sample_thresh, axis=0),'r',\
-        #          thresholds,np.average(sample_prec, axis=0),'g',\
-        #          thresholds,np.average(sample_rec, axis=0),'y')
-        
-        # threshF.append(np.average(sample_thresh, axis=0))
-        # precF.append(np.average(sample_prec, axis=0))
-        # recF.append(np.average(sample_rec, axis=0))
