@@ -9,6 +9,7 @@ from random import shuffle
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import f_classif
+import matplotlib.pyplot as plt
 
 import sys
 sys.path.append('MLtools/')
@@ -16,7 +17,7 @@ import cv_averages
 
 
 
-def FeatureExtract(data, database):
+def FeatureExtract(data, database=""):
 	#Run through data, create representations, extract features, and aggregate
 	for d in data:
 		#Load and translate data
@@ -104,31 +105,27 @@ data.sort(key=lambda x: x[1])
 #Extract features of proteins and add in cd4 and viral load
 MLdata = FeatureExtract(data, database)
 
+
 #Create X and y vectors for machine learning (and shuffle so cv's work better)
-XandY = select_shuffle(MLdata,firstIndex = 0)
+XandY = select_shuffle(MLdata,firstIndex = 400)
 X = XandY['X']
 y = XandY['y']
 
 
 
 #Do Machine Learning 
-RF = RandomForestClassifier(n_estimators=200)
-Svec = SVC(probability=True, class_weight = 'auto')
+Svec = SVC(C=2, probability=True, class_weight = 'auto')
 cv = cross_validation.KFold(len(X), 5, indices=False)
+Xreduce = SelectKBest(f_classif, 25).fit_transform(X,y) #reduces the data for the SVM classifier - should be optimized
 
-Xreduce = SelectKBest(f_classif, 100).fit_transform(X,y) #reduces the data for the SVM classifier
 
 #cv_averages is a package I made - it is in the folder MLtools
-print cv_averages.cv_metrics(Svec, cv, Xreduce, y, precision_recall = True, auc = True)
-print cv_averages.cv_metrics(RF, cv, X, y, precision_recall = True, auc = True, reduce_data = True)
+Metrics = cv_averages.cv_metrics(Svec, cv, Xreduce, y, precision_recall = True, auc = True)
+print Metrics
+#{'recall': 0.60263754963131022, 'auc': 0.80881485490512639, 'score': 0.73454545454545461, 'precision': 0.6610307087441234, 'F1': 0.62633444653818171}
 
 
 
-#Do SVM again but this time don't use all data
-XandY = select_shuffle(MLdata,firstIndex = 450)
-X = XandY['X']
-y = XandY['y']
-cv = cross_validation.KFold(len(X), 5, indices=False)
-Xreduce = SelectKBest(f_classif, 100).fit_transform(X,y) #reduces the data for the SVM classifier
-print cv_averages.cv_metrics(Svec, cv, Xreduce, y, precision_recall = True, auc = True)
+
+
 
