@@ -5,3 +5,4 @@
 *.fasta
 databases/
 PSSMout.txt
+.DS_Store
