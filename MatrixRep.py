@@ -127,12 +127,10 @@ def PSSM(protein, database = "uniprot_sprot.fasta", numIter = 3, outfile = "PSSM
 
     #PSSM values is just a nx20 matrix containing the values of the PSSM
     PSSMvalues = np.array([x[2:22] for x in labeledPSSM[1:]])
-    print PSSMvalues
-
 
     return {"Column labels": np.array(labels), "PSSM Values": PSSMvalues}
 
 
 
 
-print(PSSM("ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF", database = "databases/uniprot_sprot.fasta"))
+#print(PSSM("ACGASQWERASDQWERTYPLKMNASDQWERPOLKFDREQEPOLKCWEDFFMNMOPFDTREWQTYDSTEDF", database = "databases/uniprot_sprot.fasta"))
